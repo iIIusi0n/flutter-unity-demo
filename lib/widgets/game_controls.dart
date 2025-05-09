@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_joystick/flutter_joystick.dart';
 
-class GameControls extends StatelessWidget {
+class GameControls extends StatefulWidget {
   final VoidCallback? onCameraPressed;
   final VoidCallback? onPlantsInfoPressed;
   final VoidCallback? onStorePressed;
@@ -22,6 +22,13 @@ class GameControls extends StatelessWidget {
   });
 
   @override
+  State<GameControls> createState() => _GameControlsState();
+}
+
+class _GameControlsState extends State<GameControls> {
+  double _sliderValue = 0.5;
+
+  @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
@@ -31,7 +38,7 @@ class GameControls extends StatelessWidget {
           child: Material(
             color: Colors.transparent,
             child: InkWell(
-              onTap: onCameraPressed,
+              onTap: widget.onCameraPressed,
               customBorder: const CircleBorder(),
               child: Container(
                 padding: const EdgeInsets.all(12),
@@ -52,7 +59,7 @@ class GameControls extends StatelessWidget {
               Material(
                 color: Colors.transparent,
                 child: InkWell(
-                  onTap: onPlantsInfoPressed,
+                  onTap: widget.onPlantsInfoPressed,
                   customBorder: const CircleBorder(),
                   child: Container(
                     padding: const EdgeInsets.all(12),
@@ -64,7 +71,7 @@ class GameControls extends StatelessWidget {
                   ),
                 ),
               ),
-              if (notificationCount != null && notificationCount! > 0)
+              if (widget.notificationCount != null && widget.notificationCount! > 0)
                 Positioned(
                   bottom: 8,
                   right: 8,
@@ -75,7 +82,7 @@ class GameControls extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Text(
-                      notificationCount.toString(),
+                      widget.notificationCount.toString(),
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 12,
@@ -93,7 +100,7 @@ class GameControls extends StatelessWidget {
           child: Material(
             color: Colors.transparent,
             child: InkWell(
-              onTap: onStorePressed,
+              onTap: widget.onStorePressed,
               customBorder: const CircleBorder(),
               child: Container(
                 padding: const EdgeInsets.all(12),
@@ -116,8 +123,8 @@ class GameControls extends StatelessWidget {
               mode: JoystickMode.all,
               period: const Duration(milliseconds: 50),
               listener: (details) {
-                if (onJoystickChanged != null) {
-                  onJoystickChanged!(details);
+                if (widget.onJoystickChanged != null) {
+                  widget.onJoystickChanged!(details);
                 }
               },
               base: Container(
@@ -161,7 +168,7 @@ class GameControls extends StatelessWidget {
                   child: Material(
                     color: Colors.transparent,
                     child: InkWell(
-                      onTap: onHarvestPressed,
+                      onTap: widget.onHarvestPressed,
                       customBorder: const CircleBorder(),
                       child: Container(
                         padding: const EdgeInsets.all(16),
@@ -195,7 +202,7 @@ class GameControls extends StatelessWidget {
                   child: Material(
                     color: Colors.transparent,
                     child: InkWell(
-                      onTap: onWateringPressed,
+                      onTap: widget.onWateringPressed,
                       customBorder: const CircleBorder(),
                       child: Container(
                         padding: const EdgeInsets.all(16),
@@ -224,6 +231,27 @@ class GameControls extends StatelessWidget {
                   ),
                 ),
               ],
+            ),
+          ),
+        ),
+        Positioned(
+          right: 16,
+          top: 200,
+          bottom: 200,
+          child: RotatedBox(
+            quarterTurns: 1,
+            child: Container(
+              width: 200,
+              child: Slider(
+                value: _sliderValue,
+                onChanged: (value) {
+                  setState(() {
+                    _sliderValue = value;
+                  });
+                },
+                activeColor: Colors.white.withOpacity(0.3),
+                inactiveColor: Colors.white.withOpacity(0.1),
+              ),
             ),
           ),
         ),

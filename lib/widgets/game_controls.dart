@@ -6,6 +6,7 @@ class GameControls extends StatefulWidget {
   final VoidCallback? onCameraPressed;
   final VoidCallback? onPlantsInfoPressed;
   final VoidCallback? onStorePressed;
+  final VoidCallback? onStoragePressed;
   final VoidCallback? onHarvestPressed;
   final VoidCallback? onWateringPressed;
   final int? notificationCount;
@@ -16,6 +17,7 @@ class GameControls extends StatefulWidget {
     this.onCameraPressed,
     this.onPlantsInfoPressed,
     this.onStorePressed,
+    this.onStoragePressed,
     this.onHarvestPressed,
     this.onWateringPressed,
     this.notificationCount,
@@ -98,6 +100,25 @@ class _GameControlsState extends State<GameControls> {
                   ),
                 ),
             ],
+          ),
+        ),
+        Positioned(
+          top: 200,
+          left: 20,
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: widget.onStoragePressed,
+              customBorder: const CircleBorder(),
+              child: Container(
+                padding: const EdgeInsets.all(12),
+                child: const Icon(
+                  Icons.warehouse_rounded,
+                  size: 40,
+                  color: Colors.white,
+                ),
+              ),
+            ),
           ),
         ),
         Positioned(

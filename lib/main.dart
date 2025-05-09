@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 import 'package:flutter/services.dart';
 import 'widgets/game_controls.dart';
+import 'screens/plants_info_screen.dart';
+import 'screens/storage_screen.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(
@@ -30,6 +32,30 @@ class _UnityDemoScreenState extends State<UnityDemoScreen> {
   UnityWidgetController? _unityWidgetController;
   bool _isUnityReady = false;
 
+  void _showPlantsInfo() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => const SizedBox(
+        height: 600,
+        child: PlantsInfoScreen(),
+      ),
+    );
+  }
+
+  void _showStorage() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => const SizedBox(
+        height: 600,
+        child: StorageScreen(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,9 +83,8 @@ class _UnityDemoScreenState extends State<UnityDemoScreen> {
                   onStorePressed: () {
                     // TODO: Implement store functionality
                   },
-                  onPlantsInfoPressed: () {
-                    // TODO: Implement plants info functionality
-                  },
+                  onPlantsInfoPressed: _showPlantsInfo,
+                  onStoragePressed: _showStorage,
                   notificationCount: 2,
                 ),
             ],

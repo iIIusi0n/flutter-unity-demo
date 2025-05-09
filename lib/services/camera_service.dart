@@ -13,8 +13,9 @@ class CameraService {
 
     final controller = CameraController(
       cameras.first,
-      ResolutionPreset.medium,
+      ResolutionPreset.high,
       enableAudio: false,
+      imageFormatGroup: ImageFormatGroup.jpeg,
     );
 
     await controller.initialize();

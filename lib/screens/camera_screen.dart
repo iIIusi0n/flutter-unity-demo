@@ -81,19 +81,20 @@ class _CameraScreenState extends State<CameraScreen> {
       );
     }
 
+    // Get the screen size
+    final size = MediaQuery.of(context).size;
+    // Calculate the scale factor
+    final scale = 1 / (_controller!.value.aspectRatio * size.aspectRatio);
+
     return Scaffold(
       backgroundColor: Colors.black,
       body: Stack(
         fit: StackFit.expand,
         children: [
-          SizedBox.expand(
-            child: FittedBox(
-              fit: BoxFit.cover,
-              child: SizedBox(
-                width: _controller!.value.previewSize!.width,
-                height: _controller!.value.previewSize!.height,
-                child: CameraPreview(_controller!),
-              ),
+          Transform.scale(
+            scale: scale,
+            child: Center(
+              child: CameraPreview(_controller!),
             ),
           ),
           Positioned(

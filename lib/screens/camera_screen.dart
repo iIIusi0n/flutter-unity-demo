@@ -161,7 +161,7 @@ class _AnalysisModalState extends State<_AnalysisModal> {
   static const List<String> validPlants = [
     '토마토',
     '딸기',
-    '상추',
+    '호박',
     '당근',
     '옥수수',
     '고추',

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class CameraOverlay extends StatelessWidget {
+class GameControls extends StatelessWidget {
   final VoidCallback? onCameraPressed;
   final VoidCallback? onPlantsInfoPressed;
   final VoidCallback? onStorePressed;
   final int? notificationCount;
 
-  const CameraOverlay({
+  const GameControls({
     super.key,
     this.onCameraPressed,
     this.onPlantsInfoPressed,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 import 'package:flutter/services.dart';
-import 'widgets/camera_overlay.dart';
+import 'widgets/game_controls.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(
@@ -47,9 +47,12 @@ class _UnityDemoScreenState extends State<UnityDemoScreen> {
                   onUnityCreated: onUnityCreated,
                 ),
               ),
-              CameraOverlay(
+              GameControls(
                 onCameraPressed: () {
                   // TODO: Implement camera functionality
+                },
+                onStorePressed: () {
+                  // TODO: Implement store functionality
                 },
                 notificationCount: 2,
               ),

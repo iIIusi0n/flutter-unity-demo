@@ -51,6 +51,7 @@ class _UnityDemoScreenState extends State<UnityDemoScreen> {
                 onCameraPressed: () {
                   // TODO: Implement camera functionality
                 },
+                notificationCount: 2,
               ),
             ],
           ),

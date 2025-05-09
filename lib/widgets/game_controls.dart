@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_joystick/flutter_joystick.dart';
 
 class GameControls extends StatelessWidget {
   final VoidCallback? onCameraPressed;
@@ -7,6 +8,7 @@ class GameControls extends StatelessWidget {
   final VoidCallback? onHarvestPressed;
   final VoidCallback? onWateringPressed;
   final int? notificationCount;
+  final Function(StickDragDetails)? onJoystickChanged;
 
   const GameControls({
     super.key,
@@ -16,6 +18,7 @@ class GameControls extends StatelessWidget {
     this.onHarvestPressed,
     this.onWateringPressed,
     this.notificationCount,
+    this.onJoystickChanged,
   });
 
   @override
@@ -104,6 +107,47 @@ class GameControls extends StatelessWidget {
           ),
         ),
         Positioned(
+          bottom: 70,
+          left: 40,
+          child: SizedBox(
+            width: 120,
+            height: 120,
+            child: Joystick(
+              mode: JoystickMode.all,
+              period: const Duration(milliseconds: 50),
+              listener: (details) {
+                if (onJoystickChanged != null) {
+                  onJoystickChanged!(details);
+                }
+              },
+              base: Container(
+                width: 120,
+                height: 120,
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.2),
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: Colors.white.withOpacity(0.2),
+                    width: 2,
+                  ),
+                ),
+              ),
+              stick: Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.5),
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: Colors.white.withOpacity(0.5),
+                    width: 2,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+        Positioned(
           bottom: 40,
           right: 40,
           child: SizedBox(
@@ -146,7 +190,7 @@ class GameControls extends StatelessWidget {
                   ),
                 ),
                 Positioned(
-                  right: 40,
+                  right: 30,
                   bottom: 0,
                   child: Material(
                     color: Colors.transparent,

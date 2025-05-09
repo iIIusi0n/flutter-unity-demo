@@ -21,87 +21,56 @@ class GameControls extends StatelessWidget {
         Positioned(
           top: 80,
           left: 20,
-          child: Container(
-            width: 60,
-            height: 60,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: const Color.fromARGB(255, 60, 155, 65).withOpacity(0.85),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.15),
-                  spreadRadius: 1,
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: Material(
-              color: Colors.transparent,
-              child: InkWell(
-                borderRadius: BorderRadius.circular(30),
-                onTap: onCameraPressed,
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: onCameraPressed,
+              child: Container(
+                padding: const EdgeInsets.all(12),
                 child: const Icon(
                   Icons.camera_alt_rounded,
-                  size: 28,
-                  color: Color(0xFFE8F5E9),
+                  size: 40,
+                  color: Colors.white,
                 ),
               ),
             ),
           ),
         ),
         Positioned(
-          top: 156,
+          top: 140,
           left: 20,
           child: Stack(
             children: [
-              Container(
-                width: 60,
-                height: 60,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: const Color(0xFFE8F5E9).withOpacity(0.85),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.15),
-                      spreadRadius: 1,
-                      blurRadius: 8,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(30),
-                    onTap: onPlantsInfoPressed,
+              Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: onPlantsInfoPressed,
+                  child: Container(
+                    padding: const EdgeInsets.all(12),
                     child: const Icon(
                       Icons.eco_rounded,
-                      size: 32,
-                      color: Color.fromARGB(255, 60, 155, 65),
+                      size: 40,
+                      color: Colors.white,
                     ),
                   ),
                 ),
               ),
               if (notificationCount != null && notificationCount! > 0)
                 Positioned(
-                  top: 0,
-                  right: 0,
+                  bottom: 8,
+                  right: 8,
                   child: Container(
-                    width: 20,
-                    height: 20,
-                    decoration: const BoxDecoration(
+                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    decoration: BoxDecoration(
                       color: Colors.red,
-                      shape: BoxShape.circle,
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                    child: Center(
-                      child: Text(
-                        notificationCount.toString(),
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                        ),
+                    child: Text(
+                      notificationCount.toString(),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
@@ -112,30 +81,16 @@ class GameControls extends StatelessWidget {
         Positioned(
           top: 80,
           right: 20,
-          child: Container(
-            width: 60,
-            height: 60,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: const Color.fromARGB(255, 76, 175, 80).withOpacity(0.85),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.15),
-                  spreadRadius: 1,
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: Material(
-              color: Colors.transparent,
-              child: InkWell(
-                borderRadius: BorderRadius.circular(30),
-                onTap: onStorePressed,
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: onStorePressed,
+              child: Container(
+                padding: const EdgeInsets.all(12),
                 child: const Icon(
                   Icons.store_rounded,
-                  size: 28,
-                  color: Color(0xFFF1F8E9),
+                  size: 40,
+                  color: Colors.white,
                 ),
               ),
             ),

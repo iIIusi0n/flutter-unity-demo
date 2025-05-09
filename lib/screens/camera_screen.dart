@@ -40,21 +40,8 @@ class _CameraScreenState extends State<CameraScreen> {
     try {
       final base64Image = await CameraService.captureAndEncodeImage(_controller!);
       if (base64Image != null) {
-        final success = await CameraService.uploadImage(base64Image);
-        if (success) {
-          if (mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Image uploaded successfully')),
-            );
-            Navigator.pop(context);
-          }
-        } else {
-          if (mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Failed to upload image')),
-            );
-          }
-        }
+        Navigator.pop(context); // Return to main screen
+        _showAnalysisModal(context, base64Image);
       }
     } finally {
       if (mounted) {
@@ -63,6 +50,14 @@ class _CameraScreenState extends State<CameraScreen> {
         });
       }
     }
+  }
+
+  Future<void> _showAnalysisModal(BuildContext context, String base64Image) async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => _AnalysisModal(base64Image: base64Image),
+    );
   }
 
   @override
@@ -81,9 +76,7 @@ class _CameraScreenState extends State<CameraScreen> {
       );
     }
 
-    // Get the screen size
     final size = MediaQuery.of(context).size;
-    // Calculate the scale factor
     final scale = 1 / (_controller!.value.aspectRatio * size.aspectRatio);
 
     return Scaffold(
@@ -97,6 +90,13 @@ class _CameraScreenState extends State<CameraScreen> {
               child: CameraPreview(_controller!),
             ),
           ),
+          if (_isCapturing)
+            Container(
+              color: Colors.black54,
+              child: const Center(
+                child: CircularProgressIndicator(),
+              ),
+            ),
           Positioned(
             bottom: 30,
             left: 0,
@@ -129,11 +129,140 @@ class _CameraScreenState extends State<CameraScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(width: 70), // Placeholder for symmetry
+                const SizedBox(width: 70),
               ],
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _AnalysisModal extends StatefulWidget {
+  final String base64Image;
+
+  const _AnalysisModal({required this.base64Image});
+
+  @override
+  State<_AnalysisModal> createState() => _AnalysisModalState();
+}
+
+class _AnalysisModalState extends State<_AnalysisModal> {
+  bool _isUploading = true;
+  bool _isAnalyzing = false;
+  AnalysisResult? _analysisResult;
+  String? _error;
+  int? _analysisId;
+
+  @override
+  void initState() {
+    super.initState();
+    _startAnalysis();
+  }
+
+  Future<void> _startAnalysis() async {
+    try {
+      _analysisId = await CameraService.uploadImage(widget.base64Image);
+      if (_analysisId != null) {
+        setState(() {
+          _isUploading = false;
+          _isAnalyzing = true;
+        });
+        _pollAnalysisResult();
+      } else {
+        setState(() {
+          _error = 'Failed to upload image';
+          _isUploading = false;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _error = 'Error: $e';
+        _isUploading = false;
+      });
+    }
+  }
+
+  Future<void> _pollAnalysisResult() async {
+    while (mounted && _analysisId != null) {
+      final result = await CameraService.getAnalysisResult(_analysisId!);
+      if (result != null) {
+        setState(() {
+          _analysisResult = result;
+          _isAnalyzing = false;
+        });
+        break;
+      }
+      await Future.delayed(const Duration(seconds: 1));
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      backgroundColor: Colors.transparent,
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.9,
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (_isUploading) ...[
+              const CircularProgressIndicator(),
+              const SizedBox(height: 20),
+              const Text(
+                'Uploading image...',
+                style: TextStyle(fontSize: 18),
+              ),
+            ] else if (_isAnalyzing) ...[
+              const CircularProgressIndicator(),
+              const SizedBox(height: 20),
+              const Text(
+                'Analyzing plant...',
+                style: TextStyle(fontSize: 18),
+              ),
+            ] else if (_error != null) ...[
+              Text(
+                _error!,
+                style: const TextStyle(color: Colors.red, fontSize: 18),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Close'),
+              ),
+            ] else if (_analysisResult != null) ...[
+              Text(
+                _analysisResult!.name,
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 20),
+              Text(
+                'Water every ${_analysisResult!.daysBetweenWater} days',
+                style: const TextStyle(fontSize: 18),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                'Ready to harvest in ${_analysisResult!.daysToMaturity} days',
+                style: const TextStyle(fontSize: 18),
+              ),
+              const SizedBox(height: 30),
+              ElevatedButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Done'),
+              ),
+            ],
+          ],
+        ),
       ),
     );
   }

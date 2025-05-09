@@ -6,7 +6,32 @@ import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
 
+class AnalysisResult {
+  final String name;
+  final int daysBetweenWater;
+  final int daysToMaturity;
+  final String? error;
+
+  AnalysisResult({
+    required this.name,
+    required this.daysBetweenWater,
+    required this.daysToMaturity,
+    this.error,
+  });
+
+  factory AnalysisResult.fromJson(Map<String, dynamic> json) {
+    return AnalysisResult(
+      name: json['name'] ?? '',
+      daysBetweenWater: json['days_between_water'] ?? 0,
+      daysToMaturity: json['days_to_maturity'] ?? 0,
+      error: json['error'],
+    );
+  }
+}
+
 class CameraService {
+  static const String baseUrl = 'https://499b-180-71-27-252.ngrok-free.app/api'; // Replace with your server URL
+
   static Future<CameraController?> initializeCamera() async {
     final cameras = await availableCameras();
     if (cameras.isEmpty) return null;
@@ -33,21 +58,44 @@ class CameraService {
     }
   }
 
-  static Future<bool> uploadImage(String base64Image) async {
+  static Future<int?> uploadImage(String base64Image) async {
     try {
       final response = await http.post(
-        Uri.parse('YOUR_SERVER_ENDPOINT'), // Replace with your actual server endpoint
+        Uri.parse('$baseUrl/analysis'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
-          'image': base64Image,
-          'timestamp': DateTime.now().toIso8601String(),
+          'encoded_image': base64Image,
         }),
       );
 
-      return response.statusCode == 200;
+      if (response.statusCode == 202) {
+        final data = jsonDecode(response.body);
+        return data['id'] as int;
+      }
+      return null;
     } catch (e) {
       debugPrint('Error uploading image: $e');
-      return false;
+      return null;
+    }
+  }
+
+  static Future<AnalysisResult?> getAnalysisResult(int id) async {
+    try {
+      final response = await http.get(
+        Uri.parse('$baseUrl/analysis/$id'),
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return AnalysisResult.fromJson(data);
+      } else if (response.statusCode == 202) {
+        // Analysis still in progress
+        return null;
+      }
+      return null;
+    } catch (e) {
+      debugPrint('Error getting analysis result: $e');
+      return null;
     }
   }
 } 

@@ -28,6 +28,7 @@ class _UnityDemoScreenState extends State<UnityDemoScreen> {
   static final GlobalKey<ScaffoldState> _scaffoldKey =
       GlobalKey<ScaffoldState>();
   UnityWidgetController? _unityWidgetController;
+  bool _isUnityReady = false;
 
   @override
   Widget build(BuildContext context) {
@@ -45,20 +46,22 @@ class _UnityDemoScreenState extends State<UnityDemoScreen> {
                 color: Colors.yellow,
                 child: UnityWidget(
                   onUnityCreated: onUnityCreated,
+                  onUnityMessage: onUnityMessage,
                 ),
               ),
-              GameControls(
-                onCameraPressed: () {
-                  // TODO: Implement camera functionality
-                },
-                onStorePressed: () {
-                  // TODO: Implement store functionality
-                },
-                onPlantsInfoPressed: () {
-                  // TODO: Implement plants info functionality
-                },
-                notificationCount: 2,
-              ),
+              if (_isUnityReady)
+                GameControls(
+                  onCameraPressed: () {
+                    // TODO: Implement camera functionality
+                  },
+                  onStorePressed: () {
+                    // TODO: Implement store functionality
+                  },
+                  onPlantsInfoPressed: () {
+                    // TODO: Implement plants info functionality
+                  },
+                  notificationCount: 2,
+                ),
             ],
           ),
         ),
@@ -69,5 +72,14 @@ class _UnityDemoScreenState extends State<UnityDemoScreen> {
   // Callback that connects the created controller to the unity controller
   void onUnityCreated(controller) {
     _unityWidgetController = controller;
+  }
+
+  // Callback that receives messages from Unity
+  void onUnityMessage(dynamic message) {
+    if (message is String && message == 'UnityReady') {
+      setState(() {
+        _isUnityReady = true;
+      });
+    }
   }
 }

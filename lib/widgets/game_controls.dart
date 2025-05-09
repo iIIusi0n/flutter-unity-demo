@@ -25,6 +25,7 @@ class GameControls extends StatelessWidget {
             color: Colors.transparent,
             child: InkWell(
               onTap: onCameraPressed,
+              customBorder: const CircleBorder(),
               child: Container(
                 padding: const EdgeInsets.all(12),
                 child: const Icon(
@@ -45,6 +46,7 @@ class GameControls extends StatelessWidget {
                 color: Colors.transparent,
                 child: InkWell(
                   onTap: onPlantsInfoPressed,
+                  customBorder: const CircleBorder(),
                   child: Container(
                     padding: const EdgeInsets.all(12),
                     child: const Icon(
@@ -85,6 +87,7 @@ class GameControls extends StatelessWidget {
             color: Colors.transparent,
             child: InkWell(
               onTap: onStorePressed,
+              customBorder: const CircleBorder(),
               child: Container(
                 padding: const EdgeInsets.all(12),
                 child: const Icon(

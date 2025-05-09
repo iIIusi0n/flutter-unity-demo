@@ -1,0 +1,3 @@
+[submodule "UnityClient"]
+    path = unity/MetaFarm
+    url = https://github.com/hhe5361/metaFarm.git

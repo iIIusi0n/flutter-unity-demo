@@ -30,7 +30,7 @@ class AnalysisResult {
 }
 
 class CameraService {
-  static const String baseUrl = 'https://499b-180-71-27-252.ngrok-free.app/api'; // Replace with your server URL
+  static const String baseUrl = 'https://0dbe-180-71-27-252.ngrok-free.app/api'; // Replace with your server URL
 
   static Future<CameraController?> initializeCamera() async {
     final cameras = await availableCameras();

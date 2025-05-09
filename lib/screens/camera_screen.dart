@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
+import 'dart:convert';
 import '../services/camera_service.dart';
 
 class CameraScreen extends StatefulWidget {
@@ -154,11 +155,32 @@ class _AnalysisModalState extends State<_AnalysisModal> {
   AnalysisResult? _analysisResult;
   String? _error;
   int? _analysisId;
+  Image? _capturedImage;
+
+  // List of valid plants
+  static const List<String> validPlants = [
+    '토마토',
+    '딸기',
+    '상추',
+    '당근',
+    '옥수수',
+    '고추',
+  ];
 
   @override
   void initState() {
     super.initState();
+    _decodeImage();
     _startAnalysis();
+  }
+
+  void _decodeImage() {
+    try {
+      final bytes = base64Decode(widget.base64Image);
+      _capturedImage = Image.memory(bytes);
+    } catch (e) {
+      print('Error decoding image: $e');
+    }
   }
 
   Future<void> _startAnalysis() async {
@@ -196,6 +218,49 @@ class _AnalysisModalState extends State<_AnalysisModal> {
       }
       await Future.delayed(const Duration(seconds: 1));
     }
+  }
+
+  void _showPlantingConfirmation() {
+    final bool isValidPlant = validPlants.contains(_analysisResult!.name);
+    
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('식물 심기'),
+        content: Text(
+          isValidPlant
+              ? '${_analysisResult!.name}을(를) 심으시겠습니까?'
+              : '${_analysisResult!.name}은(는) 심을 수 있지만 배송받지 못하는 식물입니다. 심으시겠습니까?',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context); // Close confirmation dialog
+              Navigator.pop(context); // Close analysis modal
+            },
+            child: const Text('취소'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              // TODO: Implement planting logic
+              Navigator.pop(context); // Close confirmation dialog
+              Navigator.pop(context); // Close analysis modal
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    isValidPlant
+                        ? '식물이 성공적으로 심어졌습니다!'
+                        : '${_analysisResult!.name}이(가) 심어졌습니다. (배송 불가)',
+                  ),
+                  backgroundColor: isValidPlant ? Colors.green : Colors.orange,
+                ),
+              );
+            },
+            child: const Text('심기'),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -238,6 +303,17 @@ class _AnalysisModalState extends State<_AnalysisModal> {
                 child: const Text('닫기'),
               ),
             ] else if (_analysisResult != null) ...[
+              if (_capturedImage != null) ...[
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: SizedBox(
+                    width: 200,
+                    height: 200,
+                    child: _capturedImage,
+                  ),
+                ),
+                const SizedBox(height: 20),
+              ],
               Text(
                 _analysisResult!.name,
                 style: const TextStyle(
@@ -256,9 +332,22 @@ class _AnalysisModalState extends State<_AnalysisModal> {
                 style: const TextStyle(fontSize: 18),
               ),
               const SizedBox(height: 30),
-              ElevatedButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('확인'),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('닫기'),
+                  ),
+                  ElevatedButton(
+                    onPressed: _showPlantingConfirmation,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      foregroundColor: Colors.white,
+                    ),
+                    child: const Text('식물 심기'),
+                  ),
+                ],
               ),
             ],
           ],

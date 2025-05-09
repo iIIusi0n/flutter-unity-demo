@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_joystick/flutter_joystick.dart';
+import '../screens/camera_screen.dart';
 
 class GameControls extends StatefulWidget {
   final VoidCallback? onCameraPressed;
@@ -38,7 +39,12 @@ class _GameControlsState extends State<GameControls> {
           child: Material(
             color: Colors.transparent,
             child: InkWell(
-              onTap: widget.onCameraPressed,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const CameraScreen()),
+                );
+              },
               customBorder: const CircleBorder(),
               child: Container(
                 padding: const EdgeInsets.all(12),

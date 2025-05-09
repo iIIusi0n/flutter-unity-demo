@@ -89,7 +89,6 @@ class CameraService {
         final data = jsonDecode(response.body);
         return AnalysisResult.fromJson(data);
       } else if (response.statusCode == 202) {
-        // Analysis still in progress
         return null;
       }
       return null;

@@ -54,6 +54,9 @@ class _UnityDemoScreenState extends State<UnityDemoScreen> {
                 onStorePressed: () {
                   // TODO: Implement store functionality
                 },
+                onPlantsInfoPressed: () {
+                  // TODO: Implement plants info functionality
+                },
                 notificationCount: 2,
               ),
             ],

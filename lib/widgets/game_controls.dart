@@ -4,6 +4,8 @@ class GameControls extends StatelessWidget {
   final VoidCallback? onCameraPressed;
   final VoidCallback? onPlantsInfoPressed;
   final VoidCallback? onStorePressed;
+  final VoidCallback? onHarvestPressed;
+  final VoidCallback? onWateringPressed;
   final int? notificationCount;
 
   const GameControls({
@@ -11,6 +13,8 @@ class GameControls extends StatelessWidget {
     this.onCameraPressed,
     this.onPlantsInfoPressed,
     this.onStorePressed,
+    this.onHarvestPressed,
+    this.onWateringPressed,
     this.notificationCount,
   });
 
@@ -96,6 +100,86 @@ class GameControls extends StatelessWidget {
                   color: Colors.white,
                 ),
               ),
+            ),
+          ),
+        ),
+        Positioned(
+          bottom: 40,
+          right: 40,
+          child: SizedBox(
+            width: 160,
+            height: 180,
+            child: Stack(
+              children: [
+                Positioned(
+                  right: 0,
+                  top: 0,
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: onHarvestPressed,
+                      customBorder: const CircleBorder(),
+                      child: Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: Colors.amber.withOpacity(0.4),
+                            width: 2,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 4,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: Icon(
+                          Icons.agriculture_rounded,
+                          size: 48,
+                          color: Colors.amber.withOpacity(0.6),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  right: 40,
+                  bottom: 0,
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: onWateringPressed,
+                      customBorder: const CircleBorder(),
+                      child: Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: Colors.blue.withOpacity(0.4),
+                            width: 2,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 4,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: Icon(
+                          Icons.water_drop_rounded,
+                          size: 48,
+                          color: Colors.blue.withOpacity(0.6),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),

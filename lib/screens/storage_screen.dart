@@ -23,12 +23,12 @@ class _StorageScreenState extends State<StorageScreen> {
   // Dummy data for demonstration
   final List<HarvestedPlant> harvestedPlants = [
     HarvestedPlant(
-      name: 'Tomato',
+      name: '토마토',
       quantity: 5,
       harvestDate: DateTime.now().subtract(const Duration(days: 2)),
     ),
     HarvestedPlant(
-      name: 'Carrot',
+      name: '당근',
       quantity: 3,
       harvestDate: DateTime.now().subtract(const Duration(days: 1)),
     ),
@@ -50,7 +50,7 @@ class _StorageScreenState extends State<StorageScreen> {
     if (selectedPlants.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Please select plants to deliver'),
+          content: Text('배송할 식물을 선택해주세요'),
           backgroundColor: Colors.red,
         ),
       );
@@ -60,7 +60,7 @@ class _StorageScreenState extends State<StorageScreen> {
     // TODO: Implement delivery logic
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
-        content: Text('Plants delivered successfully!'),
+        content: Text('식물이 성공적으로 배송되었습니다!'),
         backgroundColor: Colors.green,
       ),
     );
@@ -74,7 +74,7 @@ class _StorageScreenState extends State<StorageScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Storage'),
+        title: const Text('보관함'),
         backgroundColor: Colors.brown,
         foregroundColor: Colors.white,
       ),
@@ -109,8 +109,8 @@ class _StorageScreenState extends State<StorageScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 8),
-                        Text('Quantity: ${plant.quantity}'),
-                        Text('Harvested: ${plant.harvestDate.toString().split(' ')[0]}'),
+                        Text('수량: ${plant.quantity}개'),
+                        Text('수확일: ${plant.harvestDate.toString().split(' ')[0]}'),
                       ],
                     ),
                     onTap: () => _toggleSelection(index),
@@ -129,7 +129,7 @@ class _StorageScreenState extends State<StorageScreen> {
                 minimumSize: const Size(double.infinity, 50),
               ),
               child: const Text(
-                'Deliver Selected Plants',
+                '선택한 식물 배송하기',
                 style: TextStyle(fontSize: 16),
               ),
             ),

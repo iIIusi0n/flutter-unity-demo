@@ -172,13 +172,13 @@ class _AnalysisModalState extends State<_AnalysisModal> {
         _pollAnalysisResult();
       } else {
         setState(() {
-          _error = 'Failed to upload image';
+          _error = '이미지 업로드에 실패했습니다';
           _isUploading = false;
         });
       }
     } catch (e) {
       setState(() {
-        _error = 'Error: $e';
+        _error = '오류: $e';
         _isUploading = false;
       });
     }
@@ -216,14 +216,14 @@ class _AnalysisModalState extends State<_AnalysisModal> {
               const CircularProgressIndicator(),
               const SizedBox(height: 20),
               const Text(
-                'Uploading image...',
+                '이미지 업로드 중...',
                 style: TextStyle(fontSize: 18),
               ),
             ] else if (_isAnalyzing) ...[
               const CircularProgressIndicator(),
               const SizedBox(height: 20),
               const Text(
-                'Analyzing plant...',
+                '식물 분석 중...',
                 style: TextStyle(fontSize: 18),
               ),
             ] else if (_error != null) ...[
@@ -235,7 +235,7 @@ class _AnalysisModalState extends State<_AnalysisModal> {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () => Navigator.pop(context),
-                child: const Text('Close'),
+                child: const Text('닫기'),
               ),
             ] else if (_analysisResult != null) ...[
               Text(
@@ -247,18 +247,18 @@ class _AnalysisModalState extends State<_AnalysisModal> {
               ),
               const SizedBox(height: 20),
               Text(
-                'Water every ${_analysisResult!.daysBetweenWater} days',
+                '${_analysisResult!.daysBetweenWater}일마다 물주기',
                 style: const TextStyle(fontSize: 18),
               ),
               const SizedBox(height: 10),
               Text(
-                'Ready to harvest in ${_analysisResult!.daysToMaturity} days',
+                '${_analysisResult!.daysToMaturity}일 후 수확 가능',
                 style: const TextStyle(fontSize: 18),
               ),
               const SizedBox(height: 30),
               ElevatedButton(
                 onPressed: () => Navigator.pop(context),
-                child: const Text('Done'),
+                child: const Text('확인'),
               ),
             ],
           ],

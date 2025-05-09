@@ -25,13 +25,13 @@ class _PlantsInfoScreenState extends State<PlantsInfoScreen> {
   // Dummy data for demonstration
   final List<Plant> plants = [
     Plant(
-      name: 'Tomato',
+      name: '토마토',
       plantedDate: DateTime.now().subtract(const Duration(days: 5)),
       wateringFrequency: 2,
       growthProgress: 0.4,
     ),
     Plant(
-      name: 'Carrot',
+      name: '당근',
       plantedDate: DateTime.now().subtract(const Duration(days: 3)),
       wateringFrequency: 1,
       growthProgress: 0.2,
@@ -42,7 +42,7 @@ class _PlantsInfoScreenState extends State<PlantsInfoScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Plants'),
+        title: const Text('내 식물'),
         backgroundColor: Colors.green,
         foregroundColor: Colors.white,
       ),
@@ -65,8 +65,8 @@ class _PlantsInfoScreenState extends State<PlantsInfoScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 8),
-                  Text('Planted: ${plant.plantedDate.toString().split(' ')[0]}'),
-                  Text('Water every: ${plant.wateringFrequency} days'),
+                  Text('심은 날짜: ${plant.plantedDate.toString().split(' ')[0]}'),
+                  Text('물주기: ${plant.wateringFrequency}일마다'),
                   const SizedBox(height: 8),
                   LinearProgressIndicator(
                     value: plant.growthProgress,
@@ -75,7 +75,7 @@ class _PlantsInfoScreenState extends State<PlantsInfoScreen> {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Growth: ${(plant.growthProgress * 100).toStringAsFixed(1)}%',
+                    '성장률: ${(plant.growthProgress * 100).toStringAsFixed(1)}%',
                     style: const TextStyle(fontSize: 12),
                   ),
                 ],
